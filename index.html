@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Motivation Home Page</title>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#f5f5f5;
+    text-align:center;
+    font-weight:bold;
+    color:black;
+}
+
+/* Top Buttons */
+.top-buttons{
+    background:#ffffff;
+    padding:15px;
+    position:sticky;
+    top:0;
+    box-shadow:0 2px 5px rgba(0,0,0,0.2);
+}
+
+.top-buttons button{
+    padding:12px 20px;
+    margin:5px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* Sections */
+.section{
+    display:none;
+    padding:20px;
+}
+
+/* Quotes */
+.quote{
+    font-size:20px;
+    margin:15px;
+}
+
+/* Calculator */
+.calculator{
+    width:260px;
+    margin:20px auto;
+}
+
+.calculator input{
+    width:100%;
+    height:40px;
+    font-size:18px;
+    text-align:right;
+    margin-bottom:10px;
+}
+
+.calculator button{
+    width:60px;
+    height:40px;
+    margin:3px;
+    font-size:16px;
+    font-weight:bold;
+}
+
+/* Clock */
+.clock{
+    font-size:40px;
+    margin-top:30px;
+    padding:20px;
+    background:white;
+    display:inline-block;
+    box-shadow:0 0 10px rgba(0,0,0,0.3);
+}
+
+/* Math formulas */
+.formula{
+    font-size:18px;
+    margin:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="top-buttons">
+    <button onclick="showSection('home')">HOME</button>
+    <button onclick="showSection('calculator')">CALCULATOR</button>
+    <button onclick="showSection('clock')">CLOCK</button>
+    <button onclick="showSection('math')">MATH FORMULAS</button>
+</div>
+
+<!-- HOME -->
+<div id="home" class="section" style="display:block;">
+    <h2>MOTIVATIONAL QUOTES</h2>
+    <div class="quote">🔥 Dream big. Work hard. Stay focused.</div>
+    <div class="quote">🔥 Success comes to those who never give up.</div>
+    <div class="quote">🔥 Today’s hard work is tomorrow’s success.</div>
+    <div class="quote">🔥 Believe in yourself and everything is possible.</div>
+    <div class="quote">🔥 Don’t stop until you are proud.</div>
+</div>
+
+<!-- CALCULATOR -->
+<div id="calculator" class="section">
+    <h2>CALCULATOR</h2>
+    <div class="calculator">
+        <input type="text" id="result" disabled>
+        <br>
+        <button onclick="clr()">C</button>
+        <button onclick="del()">DEL</button>
+        <button onclick="insert('/')">/</button>
+        <button onclick="insert('*')">*</button><br>
+
+        <button onclick="insert('7')">7</button>
+        <button onclick="insert('8')">8</button>
+        <button onclick="insert('9')">9</button>
+        <button onclick="insert('-')">-</button><br>
+
+        <button onclick="insert('4')">4</button>
+        <button onclick="insert('5')">5</button>
+        <button onclick="insert('6')">6</button>
+        <button onclick="insert('+')">+</button><br>
+
+        <button onclick="insert('1')">1</button>
+        <button onclick="insert('2')">2</button>
+        <button onclick="insert('3')">3</button>
+        <button onclick="calculate()">=</button><br>
+
+        <button onclick="insert('0')" style="width:190px;">0</button>
+    </div>
+</div>
+
+<!-- CLOCK -->
+<div id="clock" class="section">
+    <h2>DIGITAL CLOCK</h2>
+    <div class="clock" id="time">00:00:00</div>
+</div>
+
+<!-- MATH FORMULAS -->
+<div id="math" class="section">
+    <h2>MATH FORMULAS</h2>
+    <div class="formula">➤ Area of Square = a × a</div>
+    <div class="formula">➤ Area of Rectangle = l × b</div>
+    <div class="formula">➤ Area of Circle = π × r²</div>
+    <div class="formula">➤ Simple Interest = (P × R × T) / 100</div>
+    <div class="formula">➤ Speed = Distance / Time</div>
+    <div class="formula">➤ Percentage = (Value / Total) × 100</div>
+</div>
+
+<script>
+function showSection(id){
+    let sections = document.getElementsByClassName("section");
+    for(let i=0;i<sections.length;i++){
+        sections[i].style.display="none";
+    }
+    document.getElementById(id).style.display="block";
+}
+
+/* Calculator */
+function insert(val){
+    document.getElementById("result").value += val;
+}
+function clr(){
+    document.getElementById("result").value = "";
+}
+function del(){
+    let x = document.getElementById("result").value;
+    document.getElementById("result").value = x.slice(0,-1);
+}
+function calculate(){
+    document.getElementById("result").value =
+    eval(document.getElementById("result").value);
+}
+
+/* Digital Clock */
+function updateClock(){
+    let now = new Date();
+    let h = String(now.getHours()).padStart(2,"0");
+    let m = String(now.getMinutes()).padStart(2,"0");
+    let s = String(now.getSeconds()).padStart(2,"0");
+    document.getElementById("time").innerText = h+":"+m+":"+s;
+}
+setInterval(updateClock,1000);
+updateClock();
+</script>
+
+</body>
+</html>

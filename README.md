@@ -1,2 +1,0 @@
-# Nirmal-ojha
-Mathmatics formula 
