@@ -1,189 +1,114 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
-<title>Motivation Home Page</title>
+<title>Number Formula Tool</title>
 
 <style>
 body{
-    margin:0;
-    font-family: Arial, sans-serif;
-    background:#f5f5f5;
-    text-align:center;
-    font-weight:bold;
-    color:black;
-}
-
-/* Top Buttons */
-.top-buttons{
-    background:#ffffff;
-    padding:15px;
-    position:sticky;
-    top:0;
-    box-shadow:0 2px 5px rgba(0,0,0,0.2);
-}
-
-.top-buttons button{
-    padding:12px 20px;
-    margin:5px;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-/* Sections */
-.section{
-    display:none;
+    font-family: Arial;
+    background:#f0f2f5;
     padding:20px;
 }
 
-/* Quotes */
-.quote{
-    font-size:20px;
-    margin:15px;
+.container{
+    max-width:600px;
+    margin:auto;
+    background:#fff;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
 }
 
-/* Calculator */
-.calculator{
-    width:260px;
-    margin:20px auto;
-}
-
-.calculator input{
+select, button{
     width:100%;
-    height:40px;
-    font-size:18px;
-    text-align:right;
-    margin-bottom:10px;
-}
-
-.calculator button{
-    width:60px;
-    height:40px;
-    margin:3px;
+    padding:10px;
+    margin:10px 0;
     font-size:16px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:10px;
+    margin-top:20px;
+}
+
+.box{
+    background:#2196F3;
+    color:white;
+    padding:10px;
+    text-align:center;
+    border-radius:5px;
     font-weight:bold;
-}
-
-/* Clock */
-.clock{
-    font-size:40px;
-    margin-top:30px;
-    padding:20px;
-    background:white;
-    display:inline-block;
-    box-shadow:0 0 10px rgba(0,0,0,0.3);
-}
-
-/* Math formulas */
-.formula{
-    font-size:18px;
-    margin:10px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="top-buttons">
-    <button onclick="showSection('home')">HOME</button>
-    <button onclick="showSection('calculator')">CALCULATOR</button>
-    <button onclick="showSection('clock')">CLOCK</button>
-    <button onclick="showSection('math')">MATH FORMULAS</button>
-</div>
+<div class="container">
+    <h2>Number Formula Website</h2>
 
-<!-- HOME -->
-<div id="home" class="section" style="display:block;">
-    <h2>MOTIVATIONAL QUOTES</h2>
-    <div class="quote">🔥 Dream big. Work hard. Stay focused.</div>
-    <div class="quote">🔥 Success comes to those who never give up.</div>
-    <div class="quote">🔥 Today’s hard work is tomorrow’s success.</div>
-    <div class="quote">🔥 Believe in yourself and everything is possible.</div>
-    <div class="quote">🔥 Don’t stop until you are proud.</div>
-</div>
+    <!-- Range -->
+    <select id="range">
+        <option value="10">1 – 10</option>
+        <option value="25">1 – 25</option>
+        <option value="50">1 – 50</option>
+        <option value="100">1 – 100</option>
+    </select>
 
-<!-- CALCULATOR -->
-<div id="calculator" class="section">
-    <h2>CALCULATOR</h2>
-    <div class="calculator">
-        <input type="text" id="result" disabled>
-        <br>
-        <button onclick="clr()">C</button>
-        <button onclick="del()">DEL</button>
-        <button onclick="insert('/')">/</button>
-        <button onclick="insert('*')">*</button><br>
+    <!-- Formula select -->
+    <select id="formula">
+        <option value="">Formula चुनें</option>
+        <option value="square">n²</option>
+        <option value="cube">n³</option>
+        <option value="half">n / 2</option>
+        <option value="squareDiv3">n² / 3</option>
+        <option value="cubeDiv5">n³ / 5</option>
+    </select>
 
-        <button onclick="insert('7')">7</button>
-        <button onclick="insert('8')">8</button>
-        <button onclick="insert('9')">9</button>
-        <button onclick="insert('-')">-</button><br>
+    <!-- Button -->
+    <button onclick="generate()">Submit</button>
 
-        <button onclick="insert('4')">4</button>
-        <button onclick="insert('5')">5</button>
-        <button onclick="insert('6')">6</button>
-        <button onclick="insert('+')">+</button><br>
-
-        <button onclick="insert('1')">1</button>
-        <button onclick="insert('2')">2</button>
-        <button onclick="insert('3')">3</button>
-        <button onclick="calculate()">=</button><br>
-
-        <button onclick="insert('0')" style="width:190px;">0</button>
-    </div>
-</div>
-
-<!-- CLOCK -->
-<div id="clock" class="section">
-    <h2>DIGITAL CLOCK</h2>
-    <div class="clock" id="time">00:00:00</div>
-</div>
-
-<!-- MATH FORMULAS -->
-<div id="math" class="section">
-    <h2>MATH FORMULAS</h2>
-    <div class="formula">➤ Area of Square = a × a</div>
-    <div class="formula">➤ Area of Rectangle = l × b</div>
-    <div class="formula">➤ Area of Circle = π × r²</div>
-    <div class="formula">➤ Simple Interest = (P × R × T) / 100</div>
-    <div class="formula">➤ Speed = Distance / Time</div>
-    <div class="formula">➤ Percentage = (Value / Total) × 100</div>
+    <!-- Output -->
+    <div class="grid" id="output"></div>
 </div>
 
 <script>
-function showSection(id){
-    let sections = document.getElementsByClassName("section");
-    for(let i=0;i<sections.length;i++){
-        sections[i].style.display="none";
+function generate(){
+    let limit = Number(document.getElementById("range").value);
+    let formula = document.getElementById("formula").value;
+    let output = document.getElementById("output");
+
+    output.innerHTML = "";
+
+    if(formula === ""){
+        alert("Formula चुनिए");
+        return;
     }
-    document.getElementById(id).style.display="block";
-}
 
-/* Calculator */
-function insert(val){
-    document.getElementById("result").value += val;
-}
-function clr(){
-    document.getElementById("result").value = "";
-}
-function del(){
-    let x = document.getElementById("result").value;
-    document.getElementById("result").value = x.slice(0,-1);
-}
-function calculate(){
-    document.getElementById("result").value =
-    eval(document.getElementById("result").value);
-}
+    for(let n=1;n<=limit;n++){
+        let result;
 
-/* Digital Clock */
-function updateClock(){
-    let now = new Date();
-    let h = String(now.getHours()).padStart(2,"0");
-    let m = String(now.getMinutes()).padStart(2,"0");
-    let s = String(now.getSeconds()).padStart(2,"0");
-    document.getElementById("time").innerText = h+":"+m+":"+s;
+        if(formula === "square"){
+            result = n*n;
+        }else if(formula === "cube"){
+            result = n*n*n;
+        }else if(formula === "half"){
+            result = n/2;
+        }else if(formula === "squareDiv3"){
+            result = (n*n)/3;
+        }else if(formula === "cubeDiv5"){
+            result = (n*n*n)/5;
+        }
+
+        let div = document.createElement("div");
+        div.className = "box";
+        div.innerHTML = result;
+        output.appendChild(div);
+    }
 }
-setInterval(updateClock,1000);
-updateClock();
 </script>
 
 </body>
